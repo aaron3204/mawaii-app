@@ -191,7 +191,7 @@ const Register = props => {
                     </Formik>
                 </Grid>
                 <Grid item xs={9}>
-                    <Typography>
+                    <Typography style={{cursor:'pointer'}}>
                         <Link
                             onClick={() => props.handleClick('login')}
                             to="#"

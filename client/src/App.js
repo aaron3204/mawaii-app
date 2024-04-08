@@ -1,11 +1,5 @@
 import React from 'react';
-// import { Router, Route } from 'react-router-dom';
-
-import {
-    BrowserRouter as Router, 
-    Route,
-    Routes
-  } from 'react-router-dom';
+import { Router, Route } from 'react-router-dom';
 
 import { createTheme } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -44,15 +38,9 @@ function App() {
         <ThemeProvider theme={theme}>
             <CssBaseline />
             <SnackbarProvider maxSnack={3} autoHideDuration={3000}>
-                <Router location={history}>
-                <Routes>
-                    <Route path="/" exact element={<Home />} />
-                    <Route path="/chat" element={
-                        <PrivateRoute>
-                            <Chat />
-                        </PrivateRoute>}
-                    />
-                </Routes>
+                <Router history={history}>
+                    <Route path="/" exact component={Home} />
+                    <PrivateRoute path="/chat" component={Chat} />
                 </Router>
             </SnackbarProvider>
         </ThemeProvider>

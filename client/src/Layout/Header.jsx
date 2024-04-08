@@ -12,6 +12,7 @@ import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 import { authenticationService } from '../Services/authenticationService';
 import history from '../Utilities/history';
 import logo from './logo.png';
+import circlelogo from './circlelogo.png'
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -60,10 +61,11 @@ const Header = () => {
     const classes = useStyles();
 
     return (
-        <div className={classes.root}>
-            <AppBar position="static">
+        <div className={classes.root} >
+            <AppBar position="static" style={{backgroundColor: "#00a0ff"}}>
                 <Toolbar>
-                    <Link to="/" className={classes.title}>
+                    <Link to="/" className={classes.title} style={{height:'50px'}}>
+                        <img src={circlelogo} alt="Logo" style={{ transform: 'rotate(270deg)' }} />
                         <img src={logo} alt="Logo" />
                     </Link>
                     <Button

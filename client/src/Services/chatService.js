@@ -80,8 +80,7 @@ export function useGetConversations() {
     return getConversations;
 }
 
-// get conversation messages based on
-// to and from id's
+// get conversation messages based on user ids
 export function useGetConversationMessages() {
     const { enqueueSnackbar } = useSnackbar();
     const handleResponse = useHandleResponse();

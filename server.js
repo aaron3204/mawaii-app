@@ -63,7 +63,7 @@ app.post("/gemini", async (req, res) => {
       
       // run();
   } catch (error) {
-      // console.log(error)
+      console.log(error)
       // console.log(error.response)
       // console.log(error.response.candidates)
       // console.log(error.response.candidates[0].safetyRatings)

@@ -63,7 +63,7 @@ const Login = props => {
                                         from: { pathname: '/chat' },
                                     };
                                     history.push(from);
-                                    console.log(history)
+                                    console.log(history.location)
                                 },
                                 error => {
                                     setSubmitting(false);
@@ -136,7 +136,7 @@ const Login = props => {
                     </Formik>
                 </Grid>
                 <Grid item xs={9}>
-                    <Typography>
+                    <Typography style={{cursor:'pointer'}}>
                         <Link
                             onClick={() => props.handleClick('register')}
                             to="#"

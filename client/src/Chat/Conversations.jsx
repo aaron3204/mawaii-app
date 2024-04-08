@@ -56,7 +56,7 @@ const Conversations = (props) => {
   }, [newConversation]);
 
   useEffect(() => {
-    let socket = socketIOClient();
+    let socket = socketIOClient(process.env.REACT_APP_API_URL);
     socket.on("messages", (data) => setNewConversation(data));
 
     return () => {
@@ -73,7 +73,7 @@ const Conversations = (props) => {
         }}
       >
         <ListItemAvatar>
-          <Avatar className={classes.globe}>
+          <Avatar className={classes.globe} style={{backgroundColor: "#22357d"}}>
             <LanguageIcon />
           </Avatar>
         </ListItemAvatar>
@@ -81,7 +81,7 @@ const Conversations = (props) => {
       </ListItem>
       <Divider />
 
-      {conversations && conversations.length>0 &&(
+      {conversations && (
         <React.Fragment>
           {conversations.map((c) => (
             <ListItem
@@ -94,10 +94,10 @@ const Conversations = (props) => {
               }}
             >
               <ListItemAvatar>
-                <Avatar>
+                <Avatar style={{backgroundColor: "#026ba9"}}>
                   {commonUtilites.getInitialsFromName(
                     handleRecipient(c.recipientObj).name
-                  )}
+                  ).toUpperCase()}
                 </Avatar>
               </ListItemAvatar>
               <ListItemText

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
@@ -15,6 +15,7 @@ import socketIOClient from "socket.io-client";
 import classnames from "classnames";
 import commonUtilites from "../Utilities/common";
 import axios from 'axios';
+import bg from "./bg1.jpg"
 
 import {
   useGetGlobalMessages,
@@ -24,9 +25,15 @@ import {
 } from "../Services/chatService";
 import { authenticationService } from "../Services/authenticationService";
 
+
+
+
 const useStyles = makeStyles((theme) => ({
   root: {
     height: "100%",
+    backgroundImage: `url(${bg})`,
+    scrollBehavior: "smooth",
+    overflowX: "auto"
   },
   headerRow: {
     maxHeight: 60,
@@ -37,12 +44,18 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     justifyContent: "center",
     height: "100%",
-    color: theme.palette.primary.dark,
+    color: "black",
   },
   messageContainer: {
     height: "100%",
     display: "flex",
     alignContent: "flex-end",
+    background: "gray",
+    borderRadius: "4px",
+    backgroundImage: `url(${bg})`, // Set the background image
+    // backgroundSize: "fill", // Cover the entire container
+    backgroundPosition: "center", // Center the background image
+    // If you want to add more styles, you can include them here
   },
   messagesRow: {
     maxHeight: "calc(100vh - 184px)",
@@ -54,25 +67,32 @@ const useStyles = makeStyles((theme) => ({
   },
   messageBubble: {
     padding: 10,
-    border: "1px solid white",
-    backgroundColor: "white",
+    border: "2px solid #a5a6ac",
     borderRadius: "0 10px 10px 10px",
     boxShadow: "-3px 4px 4px 0px rgba(0,0,0,0.08)",
     marginTop: 8,
-    maxWidth: "40em",
+    maxWidth: "30em",
+    overflow: "hidden",
+    backgroundColor: "#FFFFFF", 
   },
   messageBubbleRight: {
     borderRadius: "10px 0 10px 10px",
   },
+  receivedMessage: {
+    backgroundColor: "cyan",
+    color: "white", 
+  },
   inputRow: {
     display: "flex",
     alignItems: "flex-end",
+    backgroundColor: "#FFFFFF", 
+    // backgroundColor:"white"
   },
   form: {
     width: "100%",
   },
   avatar: {
-    margin: theme.spacing(1, 1.5),
+    // margin: theme.spacing(1, 1.5),
   },
   listItem: {
     display: "flex",
@@ -104,29 +124,51 @@ const ChatBox = (props) => {
   //   scrollToBottom();
   // }, [lastMessage, props.scope, props.conversationId]);
 
+
+  let loading = 0
+  let changed = 0
+
+  function loading_message(){
+    if(loading==7){
+      loading=0
+    }
+    setNewMessage("Loading"+".".repeat(loading))
+    loading++
+  }
+
+
+
   useEffect(() => {
     const socket = socketIOClient();
     socket.on("messages", (data) => setLastMessage(data));
   }, []);
 
   const reloadMessages = () => {
+    // console.log("ran")
     if (props.scope === "Global Chat") {
       getGlobalMessages().then((res) => {
-        setMessages(res);
+        if(res.length!=messages.length){
+          // changed=1
+          setMessages(res);
+        }
       });
     } else if (props.scope !== null && props.conversationId !== null) {
-      getConversationMessages(props.user._id).then((res) => setMessages(res));
+      getConversationMessages(props.user._id).then((res) => {
+        if(res.length!=messages.length){
+          setMessages(res);
+        }
+      });
     } else {
       setMessages([]);
     }
   };
   useEffect(() => {
     reloadMessages();
-    scrollToBottom();
+    // scrollToBottom();
   }, [lastMessage, props.scope, props.conversationId, reloadMessages]);
 
   const scrollToBottom = () => {
-    chatBottom.current.scrollIntoView({ behavior: "smooth" });
+    setTimeout(chatBottom.current.scrollIntoView(), 0);
   };
 
   useEffect(scrollToBottom, [messages]);
@@ -135,15 +177,19 @@ const ChatBox = (props) => {
     e.preventDefault();
     console.log(newMessage)
     if(newMessage.indexOf("/ai")==0){
+      // setNewMessage("Loading response ....")
+      let id = setInterval(loading_message, 100)
       const URL = 'http://localhost:5000/gemini';
       axios.post(URL, {
         message:newMessage.slice(3)
       })
       .then(function (response) {
-        console.log("answer client side -", response);
+        clearInterval(id);
+        console.log("answer client side -", response.data);
         setNewMessage(response.data)
       })
       .catch(function (error) {
+        setNewMessage("Error getting AI response")
         console.log(error.candidates);
       });
     }
@@ -184,8 +230,8 @@ const ChatBox = (props) => {
                     alignItems="flex-start"
                   >
                     <ListItemAvatar className={classes.avatar}>
-                      <Avatar>
-                        {commonUtilites.getInitialsFromName(m.fromObj[0].name)}
+                      <Avatar style={{backgroundColor: "#026ba9"}}>
+                        {commonUtilites.getInitialsFromName(m.fromObj[0].name.toUpperCase())}
                       </Avatar>
                     </ListItemAvatar>
                     <ListItemText

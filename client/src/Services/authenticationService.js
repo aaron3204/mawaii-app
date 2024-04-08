@@ -34,7 +34,6 @@ export function useLogin() {
             .then(user => {
                 localStorage.setItem('currentUser', JSON.stringify(user));
                 currentUserSubject.next(user);
-                console.log(user)
                 return user;
             })
             .catch(function() {
@@ -88,5 +87,4 @@ export function useRegister() {
 function logout() {
     localStorage.removeItem('currentUser');
     currentUserSubject.next(null);
-    console.log("logout ran")
 }

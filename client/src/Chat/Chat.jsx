@@ -15,19 +15,30 @@ const useStyles = makeStyles(theme => ({
     paper: {
         minHeight: 'calc(100vh - 64px)',
         borderRadius: 0,
+    backgroundColor: "#FFFFFF",
+    color:theme.palette.primary.dark
+
     },
     sidebar: {
+    backgroundColor: "#2B2D42",
+
         zIndex: 8,
     },
     subheader: {
         display: 'flex',
         alignItems: 'center',
         cursor: 'pointer',
+    backgroundColor: "#2B2D42",
+
     },
     globe: {
-        backgroundColor: theme.palette.primary.dark,
+    backgroundColor: "black",
+
+        backgroundColor: "black",
     },
     subheaderText: {
+    backgroundColor: "#2B2D42",
+
         color: theme.palette.primary.dark,
     },
 }));
@@ -45,7 +56,7 @@ const Chat = () => {
     return (
         <React.Fragment>
             <Header />
-            <Grid container>
+            <Grid container >
                 <Grid item md={4} className={classes.sidebar}>
                     <Paper className={classes.paper} square elevation={5}>
                         <Paper square>

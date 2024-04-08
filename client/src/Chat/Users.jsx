@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
     cursor: "pointer",
   },
   globe: {
-    backgroundColor: theme.palette.primary.dark,
+    backgroundColor: "white",
   },
   subheaderText: {
     color: theme.palette.primary.dark,
@@ -39,10 +39,10 @@ const Users = (props) => {
 
   useEffect(() => {
     getUsers().then((res) => setUsers(res));
-  }, [newUser, getUsers]);
+  }, [newUser]);
 
   useEffect(() => {
-    const socket = socketIOClient();
+    const socket = socketIOClient(process.env.REACT_APP_API_URL);
     socket.on("users", (data) => {
       setNewUser(data);
     });
@@ -50,7 +50,7 @@ const Users = (props) => {
 
   return (
     <List className={classes.list}>
-      {users && users.length>0 &&(
+      {users && (
         <React.Fragment>
           {users.map((u) => (
             <ListItem
@@ -63,7 +63,7 @@ const Users = (props) => {
               button
             >
               <ListItemAvatar className={classes.avatar}>
-                <Avatar>{commonUtilites.getInitialsFromName(u.name)}</Avatar>
+                <Avatar style={{backgroundColor: "#026ba9"}}>{commonUtilites.getInitialsFromName(u.name).toUpperCase()}</Avatar>
               </ListItemAvatar>
               <ListItemText primary={u.name} />
             </ListItem>
